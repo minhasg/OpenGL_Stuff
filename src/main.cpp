@@ -13,6 +13,7 @@ int main()
 	while(!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
+		glfwSwapBuffers();
 	}
 
 	glfwDestroyWindow(window);
