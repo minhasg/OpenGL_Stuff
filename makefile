@@ -1,10 +1,11 @@
 CC = g++
 OPENGL_LINKS = -lglfw -lGLEW -lGLU -lGL
 SOURCE = ./src
-BINARY = ./bin/
+BINARY = ./bin
+INCLUDE = ./include
 
 all:
-	$(CC) $(SOURCE)/*.cpp -o $(BINARY)Hurh $(OPENGL_LINKS)
+	$(CC) -I$(INCLUDE) $(SOURCE)/*.cpp -o $(BINARY)/Hurh $(OPENGL_LINKS) 
 
 delete:
-	rm $(BINARY)*
+	rm $(BINARY)/*

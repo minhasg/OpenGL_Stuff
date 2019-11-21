@@ -1,5 +1,8 @@
 #define GLFW_STATIC
 #include <GLFW/glfw3.h>
+#include <glm/vec4.hpp>
+
+#include "Triangle.h"
 
 int main()
 {
@@ -10,10 +13,12 @@ int main()
 	GLFWwindow* window = glfwCreateWindow(800, 600, "Hurh", NULL, NULL);
 	glfwMakeContextCurrent(window);
 
+    Triangle tri;
+    
 	while(!glfwWindowShouldClose(window))
 	{
 		glfwPollEvents();
-		glfwSwapBuffers();
+		glfwSwapBuffers(window);
 	}
 
 	glfwDestroyWindow(window);
