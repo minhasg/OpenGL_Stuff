@@ -1,7 +1,7 @@
 #ifndef _SHADER_H_
 #define _SHADER_H_
 
-namespace std { class string; };
+#include <iostream>
 
 typedef enum
 {
