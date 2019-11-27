@@ -10,18 +10,23 @@
 
 #include <glm/vec4.hpp>
 
+// Forward declarations
+class Shader;
+
 class Drawable2D
 {
 	public:
         Drawable2D();
         ~Drawable2D();
-        virtual bool draw();
+        virtual bool draw() = 0;
+        bool setShader(Shader s);
         
 	protected:
         glm::vec4* _vertices;
         unsigned int _numVertices;
         unsigned int _vbo;
         
+        Shader _shader;
         bool _visible;
 };
 
