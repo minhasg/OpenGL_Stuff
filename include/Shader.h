@@ -18,6 +18,7 @@ class Shader
         bool loadShaderFromFile(ShaderType_e, std::string);
         bool compile();
         bool isCompiled();        
+        bool use();        
 
     private:
         // Filenames for the currently bound shaders
