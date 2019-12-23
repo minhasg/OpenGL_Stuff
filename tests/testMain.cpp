@@ -1,18 +1,15 @@
 #include <iostream>
 
 #include "TestData.h" 
-
-bool utilTest1()
-{
-    return true;
-}
+#include "UtilsTest.h"
 
 int main()
 {
     TestData testVector;
 
-    TestCase util_1("Function", 1, &utilTest1);
+    TestCase util_1("readTextFromFile", 1, &utilsTest_readTextFromFileTest);
 
+    testVector.addTestCase(util_1);
     testVector.run();
     testVector.printResults();
 

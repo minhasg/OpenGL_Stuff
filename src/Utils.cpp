@@ -13,9 +13,15 @@ std::string readTextFromFile(std::string filename)
     std::string line = "";
 
     file.open(filename);
+    if(!file.is_open())
+    {
+        std::cout << "Could not open file: " << filename << std::endl;
+        return "";
+    }
+
     while(std::getline(file, line))
     {
-        fileContents += line;
+        fileContents += line + '\n';
     }
 
     return fileContents;
