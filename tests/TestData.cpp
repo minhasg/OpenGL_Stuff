@@ -39,7 +39,7 @@ void TestData::printResults()
 
     std::cout << "Number of tests run: " << _testsRun << std::endl;
     std::cout << "Number of tests passed: " << _testsPassed << std::endl;
-    std::cout << "Passing percentage: " << ( (float) _testsPassed / (float) _testsRun ) << "%" << std::endl;
+    std::cout << "Passing percentage: " << ( (float) _testsPassed / (float) _testsRun * 100.0 ) << "%" << std::endl;
 }
 
 void TestData::addTestCase(TestCase tc)
