@@ -9,6 +9,7 @@
 #define _DRAWABLE_2D_H_
 
 #include <glm/vec4.hpp>
+#include "Shader.h"
 
 // Forward declarations
 class Shader;

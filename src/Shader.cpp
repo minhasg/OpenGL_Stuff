@@ -60,8 +60,9 @@ bool Shader::compile()
     unsigned int vertexShader = 0;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
     
-    std::string vertexShaderSource = readTextFromFile(_vertSource);
-    glShaderSource(vertexShader, 1, &vertexShaderSource.c_str(), NULL);
+    const char* vertexShaderSource = readTextFromFile(_vertSource).c_str();
+
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
 
     int success;
@@ -77,12 +78,11 @@ bool Shader::compile()
     unsigned int fragmentShader = 0;
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-    std::string fragmentShaderSource = readTextFromFile(_fragSource);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource.c_str(), NULL);
+    const char* fragmentShaderSource = readTextFromFile(_fragSource).c_str();
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 
     success = 0;
-    char infoLog[512];
     glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
 
     if(!success)
