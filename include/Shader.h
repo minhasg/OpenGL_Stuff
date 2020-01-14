@@ -14,11 +14,11 @@ class Shader
 {
     public:
         Shader();
-        Shader(std::string, std::string, std::string);
-        bool loadShaderFromFile(ShaderType_e, std::string);
+        Shader(const std::string&);
+        bool loadShaderFromFile(const std::string&);
         bool compile();
         bool isCompiled();        
-        bool use();        
+        bool bind();        
 
     private:
         // Filenames for the currently bound shaders
@@ -27,6 +27,8 @@ class Shader
         unsigned int _shaderId;
         
         bool _isCompiled;
+
+        bool _printErrors(unsigned int shader);
 };
 
 #endif

@@ -13,44 +13,25 @@ Shader::Shader()
     _isCompiled = false;
 }
 
-Shader::Shader(std::string vertexShader, std::string fragmentShader, std::string geometryShader = "")
+Shader::Shader(const std::string& filename)
 {
-    _vertSource = vertexShader;
-    _fragSource = fragmentShader;
-    _geoSource  = geometryShader;
-
-    _shaderId = 0;
-    _isCompiled = false;    
+    loadShaderFromFile(filename);
 }
 
-bool Shader::loadShaderFromFile(ShaderType_e type, std::string filename)
+bool Shader::loadShaderFromFile(const std::string& filename)
 {
-    switch(type)
-    {
-        case SHADER_VERTEX:
-        _vertSource = filename;
-        break;
+    _vertSource = filename + ".vert";
+    _fragSource = filename + ".frag";
+    _geoSource = filename + ".geo";
 
-        case SHADER_FRAGMENT:
-        _fragSource = filename;
-        break;
-
-        case SHADER_GEOMETRY:
-        _geoSource = filename;
-        break;
-
-        default:
-            std::cout << "Error: Invalid shader type selected!" << std::endl;
-            return false;
-    };
-
-    // New shader, need to recompile
-    _isCompiled = false;
-    return true;
+    _isCompiled = compile();
+    return _isCompiled;
 }
 
 bool Shader::compile()
 {
+    bool failed = false;
+
     if(_vertSource == "" || _fragSource == "")
     {
         std::cout << "Failed to compile shader - missing vertex or fragment shader source file." << std::endl;
@@ -65,15 +46,7 @@ bool Shader::compile()
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
 
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-
-    if(!success)
-    {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "FAILED TO COMPILE VERTEX SHADER: " << infoLog << std::endl;
-    }
+    failed |= _printErrors(vertexShader);
 
     unsigned int fragmentShader = 0;
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
@@ -82,17 +55,17 @@ bool Shader::compile()
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 
-    success = 0;
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-
-    if(!success)
-    {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        std::cout << "FAILED TO COMPILE FRAGMENT SHADER: " << infoLog << std::endl;
-    }
+    failed |= _printErrors(fragmentShader);
 
     // TODO: Add compilation for geometry shader
     
+    _isCompiled = (!failed);
+
+    if(failed)
+    {
+        return false;
+    }
+
     _shaderId = glCreateProgram();
     glAttachShader(_shaderId, vertexShader);
     glAttachShader(_shaderId, fragmentShader);
@@ -104,10 +77,27 @@ bool Shader::compile()
     return true; 
 }
 
-bool Shader::use()
+bool Shader::_printErrors(unsigned int shader)
+{
+    int success;
+    char infoLog[512];
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+
+    if(!success)
+    {
+        glGetShaderInfoLog(shader, 512, NULL, infoLog);
+        std::cout << "FAILED TO COMPILE VERTEX SHADER: " << infoLog << std::endl;
+    }
+    return (bool) success;
+}
+
+bool Shader::bind()
 {
     glUseProgram(_shaderId);
     return true;
 }
 
-bool Shader::isCompiled() { return _isCompiled; }
+bool Shader::isCompiled()
+{
+    return _isCompiled;
+}
