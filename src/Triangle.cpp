@@ -1,4 +1,5 @@
 #include "Triangle.h"
+#include "Shader.h"
 #include <GL/glew.h>
 #include <glm/vec4.hpp>
 
@@ -21,7 +22,19 @@ Triangle::Triangle()
 
     _vertices = vertices;
     _numVertices = 3;
+   
+    glGenVertexArrays(1, &_vao);
+    glBindVertexArray(_vao);
+    
+    glGenBuffers(1, &_vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+    glBufferData(GL_ARRAY_BUFFER, (_numVertices * sizeof(glm::vec4)), _vertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*) 0);
+    glEnableVertexAttribArray(0);
+
+    glBindVertexArray(0);
 }
+
 
 Triangle::~Triangle()
 {
@@ -30,9 +43,9 @@ Triangle::~Triangle()
 
 bool Triangle::draw()
 {
-    glGenBuffers(1, &_vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, (_numVertices * sizeof(glm::vec4)), _vertices, GL_STATIC_DRAW);
-    
+    _shader->bind();
+    glBindVertexArray(_vao);
+    glDrawArrays(GL_TRIANGLES, 0, 3); 
+ 
     return true;
 }

@@ -6,75 +6,64 @@
 
 Shader::Shader()
 {
-    _vertSource = "";
-    _fragSource = "";
-    _geoSource  = "";
+    _source = "";
     _shaderId = 0;
-    _isCompiled = false;
 }
 
 Shader::Shader(const std::string& filename)
 {
+    _shaderId = 0;
     loadShaderFromFile(filename);
 }
 
 bool Shader::loadShaderFromFile(const std::string& filename)
 {
-    _vertSource = filename + ".vert";
-    _fragSource = filename + ".frag";
-    _geoSource = filename + ".geo";
-
-    _isCompiled = compile();
-    return _isCompiled;
+    _source = filename;
+    return compile();
 }
 
 bool Shader::compile()
 {
-    bool failed = false;
+    bool passed = true;
 
-    if(_vertSource == "" || _fragSource == "")
+    if(_source == "")
     {
-        std::cout << "Failed to compile shader - missing vertex or fragment shader source file." << std::endl;
-        return false;
+        std::cout << "Shader source not specified! Compiling with default shader." << std::endl;
+        _source = "shaders/defaultShader";
     }
 
     unsigned int vertexShader = 0;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
     
-    const char* vertexShaderSource = readTextFromFile(_vertSource).c_str();
+    const char* vertexShaderSource = readTextFromFile(_source + ".vert").c_str();
 
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
 
-    failed |= _printErrors(vertexShader);
+    passed &= _printErrors(vertexShader);
 
     unsigned int fragmentShader = 0;
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-    const char* fragmentShaderSource = readTextFromFile(_fragSource).c_str();
+    const char* fragmentShaderSource = readTextFromFile(_source + ".frag").c_str();
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 
-    failed |= _printErrors(fragmentShader);
+    passed &= _printErrors(fragmentShader);
 
     // TODO: Add compilation for geometry shader
     
-    _isCompiled = (!failed);
-
-    if(failed)
+    if(passed)
     {
-        return false;
-    }
-
-    _shaderId = glCreateProgram();
-    glAttachShader(_shaderId, vertexShader);
-    glAttachShader(_shaderId, fragmentShader);
-    glLinkProgram(_shaderId);
+        _shaderId = glCreateProgram();
+        glAttachShader(_shaderId, vertexShader);
+        glAttachShader(_shaderId, fragmentShader);
+        glLinkProgram(_shaderId);
    
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-    
-    return true; 
+        glDeleteShader(vertexShader);
+        glDeleteShader(fragmentShader);    
+    } 
+    return passed;
 }
 
 bool Shader::_printErrors(unsigned int shader)
@@ -93,11 +82,20 @@ bool Shader::_printErrors(unsigned int shader)
 
 bool Shader::bind()
 {
+    if(!_shaderId)
+    {
+        std::cout << "Attempting to bind uncompiled shader! Compiling first." << std::endl;
+        compile();
+    }
     glUseProgram(_shaderId);
     return true;
 }
 
-bool Shader::isCompiled()
+Shader& Shader::operator=(const Shader& val)
 {
-    return _isCompiled;
+    _shaderId = val._shaderId;
+    _source = val._source;
+
+    return *this;
 }
+
