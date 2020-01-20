@@ -3,6 +3,7 @@
 
 #include <GL/glew.h>
 #include <iostream>
+#include <cstdio>
 
 Shader::Shader()
 {
@@ -35,9 +36,12 @@ bool Shader::compile()
     unsigned int vertexShader = 0;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
     
-    const char* vertexShaderSource = readTextFromFile(_source + ".vert").c_str();
+    std::string vertexShaderSource = readTextFromFile(_source + ".vert");
+    const char* src = vertexShaderSource.c_str();    
 
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    //std::cout << src << std::endl;
+
+    glShaderSource(vertexShader, 1, &src, NULL);
     glCompileShader(vertexShader);
 
     passed &= _printErrors(vertexShader);
@@ -45,8 +49,9 @@ bool Shader::compile()
     unsigned int fragmentShader = 0;
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-    const char* fragmentShaderSource = readTextFromFile(_source + ".frag").c_str();
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    std::string fragmentShaderSource = readTextFromFile(_source + ".frag");
+    src = fragmentShaderSource.c_str();
+    glShaderSource(fragmentShader, 1, &src, NULL);
     glCompileShader(fragmentShader);
 
     passed &= _printErrors(fragmentShader);
