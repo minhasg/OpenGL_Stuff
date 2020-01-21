@@ -7,6 +7,13 @@
 
 #include <iostream>
 
+void printOpenGLInfo()
+{
+    std::cout << "Printing OpenGL information:\n";
+    std::cout << glGetString(GL_VERSION) << std::endl;
+    std::cout << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
+}
+
 int main()
 {
     std::cout << "Initializing glfw\n";
@@ -25,6 +32,7 @@ int main()
         return -2;
     }
     
+    printOpenGLInfo();
     Triangle tri;
     
     std::cout << "Entering main loop.\n";
