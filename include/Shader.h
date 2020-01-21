@@ -14,19 +14,20 @@ class Shader
 {
     public:
         Shader();
-        Shader(std::string, std::string, std::string);
-        bool loadShaderFromFile(ShaderType_e, std::string);
-        bool compile();
-        bool isCompiled();        
-        bool use();        
+        Shader(const std::string&);
+        bool loadShaderFromFile(const std::string&);
+        bool compile();   
+        bool bind();        
+        
+        Shader& operator=(const Shader& val);
 
     private:
         // Filenames for the currently bound shaders
-        std::string _vertSource, _fragSource, _geoSource;
+        std::string _source;
         // ID for compiled shader
         unsigned int _shaderId;
-        
-        bool _isCompiled;
+
+        bool _printErrors(unsigned int shader);
 };
 
 #endif

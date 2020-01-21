@@ -3,111 +3,104 @@
 
 #include <GL/glew.h>
 #include <iostream>
+#include <cstdio>
 
 Shader::Shader()
 {
-    _vertSource = "";
-    _fragSource = "";
-    _geoSource  = "";
+    _source = "";
     _shaderId = 0;
-    _isCompiled = false;
 }
 
-Shader::Shader(std::string vertexShader, std::string fragmentShader, std::string geometryShader = "")
+Shader::Shader(const std::string& filename)
 {
-    _vertSource = vertexShader;
-    _fragSource = fragmentShader;
-    _geoSource  = geometryShader;
-
     _shaderId = 0;
-    _isCompiled = false;    
+    loadShaderFromFile(filename);
 }
 
-bool Shader::loadShaderFromFile(ShaderType_e type, std::string filename)
+bool Shader::loadShaderFromFile(const std::string& filename)
 {
-    switch(type)
-    {
-        case SHADER_VERTEX:
-        _vertSource = filename;
-        break;
-
-        case SHADER_FRAGMENT:
-        _fragSource = filename;
-        break;
-
-        case SHADER_GEOMETRY:
-        _geoSource = filename;
-        break;
-
-        default:
-            std::cout << "Error: Invalid shader type selected!" << std::endl;
-            return false;
-    };
-
-    // New shader, need to recompile
-    _isCompiled = false;
-    return true;
+    _source = filename;
+    return compile();
 }
 
 bool Shader::compile()
 {
-    if(_vertSource == "" || _fragSource == "")
+    bool passed = true;
+
+    if(_source == "")
     {
-        std::cout << "Failed to compile shader - missing vertex or fragment shader source file." << std::endl;
-        return false;
+        std::cout << "Shader source not specified! Compiling with default shader." << std::endl;
+        _source = "shaders/defaultShader";
     }
 
     unsigned int vertexShader = 0;
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
     
-    std::string vertexShaderSource = readTextFromFile(_vertSource);
-    glShaderSource(vertexShader, 1, &vertexShaderSource.c_str(), NULL);
+    std::string vertexShaderSource = readTextFromFile(_source + ".vert");
+    const char* src = vertexShaderSource.c_str();    
+
+    //std::cout << src << std::endl;
+
+    glShaderSource(vertexShader, 1, &src, NULL);
     glCompileShader(vertexShader);
 
-    int success;
-    char infoLog[512];
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-
-    if(!success)
-    {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << "FAILED TO COMPILE VERTEX SHADER: " << infoLog << std::endl;
-    }
+    passed &= _printErrors(vertexShader);
 
     unsigned int fragmentShader = 0;
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-    std::string fragmentShaderSource = readTextFromFile(_fragSource);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource.c_str(), NULL);
+    std::string fragmentShaderSource = readTextFromFile(_source + ".frag");
+    src = fragmentShaderSource.c_str();
+    glShaderSource(fragmentShader, 1, &src, NULL);
     glCompileShader(fragmentShader);
 
-    success = 0;
-    char infoLog[512];
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-
-    if(!success)
-    {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        std::cout << "FAILED TO COMPILE FRAGMENT SHADER: " << infoLog << std::endl;
-    }
+    passed &= _printErrors(fragmentShader);
 
     // TODO: Add compilation for geometry shader
     
-    _shaderId = glCreateProgram();
-    glAttachShader(_shaderId, vertexShader);
-    glAttachShader(_shaderId, fragmentShader);
-    glLinkProgram(_shaderId);
+    if(passed)
+    {
+        _shaderId = glCreateProgram();
+        glAttachShader(_shaderId, vertexShader);
+        glAttachShader(_shaderId, fragmentShader);
+        glLinkProgram(_shaderId);
    
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-    
-    return true; 
+        glDeleteShader(vertexShader);
+        glDeleteShader(fragmentShader);    
+    } 
+    return passed;
 }
 
-bool Shader::use()
+bool Shader::_printErrors(unsigned int shader)
 {
+    int success;
+    char infoLog[512];
+    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+
+    if(!success)
+    {
+        glGetShaderInfoLog(shader, 512, NULL, infoLog);
+        std::cout << "FAILED TO COMPILE VERTEX SHADER: " << infoLog << std::endl;
+    }
+    return (bool) success;
+}
+
+bool Shader::bind()
+{
+    if(!_shaderId)
+    {
+        std::cout << "Attempting to bind uncompiled shader! Compiling first." << std::endl;
+        compile();
+    }
     glUseProgram(_shaderId);
     return true;
 }
 
-bool Shader::isCompiled() { return _isCompiled; }
+Shader& Shader::operator=(const Shader& val)
+{
+    _shaderId = val._shaderId;
+    _source = val._source;
+
+    return *this;
+}
+

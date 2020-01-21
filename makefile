@@ -32,7 +32,7 @@ Triangle.o: Drawable2D.o
 	@echo "Building Triangle.cpp"
 	@-$(CC) -c $(SOURCE)/Triangle.cpp -o $(BINARY)/Triangle.o $(OBJ_BUILD_FLAGS)
 
-Shader.o:
+Shader.o: Utils.o
 	@echo "Building Shader.cpp"
 	@-$(CC) -c $(SOURCE)/Shader.cpp -o $(BINARY)/Shader.o $(OBJ_BUILD_FLAGS)
     

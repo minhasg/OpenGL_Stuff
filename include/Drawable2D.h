@@ -9,8 +9,8 @@
 #define _DRAWABLE_2D_H_
 
 #include <glm/vec4.hpp>
+#include <iostream>
 
-// Forward declarations
 class Shader;
 
 class Drawable2D
@@ -19,14 +19,16 @@ class Drawable2D
         Drawable2D();
         ~Drawable2D();
         virtual bool draw() = 0;
-        bool setShader(Shader s);
-        
+        bool bindShader(Shader& s);
+        bool bindShader(const std::string&);        
+
 	protected:
         glm::vec4* _vertices;
         unsigned int _numVertices;
         unsigned int _vbo;
-        
-        Shader _shader;
+        unsigned int _vao;        
+
+        Shader* _shader;
         bool _visible;
 };
 
