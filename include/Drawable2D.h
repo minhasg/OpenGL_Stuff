@@ -25,8 +25,11 @@ class Drawable2D
 	protected:
         glm::vec4* _vertices;
         unsigned int _numVertices;
+        unsigned int* _indices;
+    
         unsigned int _vbo;
         unsigned int _vao;        
+        unsigned int _ebo;
 
         Shader* _shader;
         bool _visible;
