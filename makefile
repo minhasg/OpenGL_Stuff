@@ -24,7 +24,7 @@ UtilsTest.o: Utils.o
 # TARGETS FOR TESTING ABOVE, TARGETS FOR MAIN BUILD BELOW #
 ###########################################################
 
-build: Triangle.o
+build: Triangle.o Rectangle.o
 	@echo "Running main build target"
 	@-$(CC) -I$(INCLUDE) $(BINARY)/*.o $(SOURCE)/main.cpp -o $(BINARY)/$(EXECUTABLE) $(OPENGL_LINKS) 
 
@@ -43,6 +43,10 @@ Drawable2D.o: Shader.o
 Utils.o:
 	@echo "Building Utils.cpp"
 	@-$(CC) -c $(SOURCE)/Utils.cpp -o $(BINARY)/Utils.o $(OBJ_BUILD_FLAGS)
+
+Rectangle.o: Drawable2D.o
+	@echo "Building Rectangle.cpp"
+	@-$(CC) -c $(SOURCE)/Rectangle.cpp -o $(BINARY)/Rectangle.o $(OBJ_BUILD_FLAGS)
 
 clean:
 	rm $(BINARY)/*.o $(TESTS_BINARY)/*.o 
