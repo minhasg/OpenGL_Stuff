@@ -4,6 +4,7 @@
 #include <glm/vec4.hpp>
 
 #include "Triangle.h"
+#include "Rectangle.h"
 
 #include <iostream>
 
@@ -34,6 +35,7 @@ int main()
     
     printOpenGLInfo();
     Triangle tri;
+    Rectangle rect;
     
     std::cout << "Entering main loop.\n";
 	while(!glfwWindowShouldClose(window))
@@ -43,8 +45,9 @@ int main()
         
         // Draw everything
         //std::cout << "Drawing triangle.\n";
-        tri.draw();
-        
+        //tri.draw();
+        rect.draw();        
+
         // Swap buffers
         //std::cout << "Swapping buffers.\n";
 		glfwSwapBuffers(window);
