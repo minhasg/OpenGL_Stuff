@@ -35,6 +35,7 @@ int main()
     
     printOpenGLInfo();
     Triangle tri;
+    tri.bindShader("shaders/BasicTriangle");
     Rectangle rect;
     
     std::cout << "Entering main loop.\n";
@@ -45,8 +46,8 @@ int main()
         
         // Draw everything
         //std::cout << "Drawing triangle.\n";
-        //tri.draw();
-        rect.draw();        
+        tri.draw();
+        //rect.draw();        
 
         // Swap buffers
         //std::cout << "Swapping buffers.\n";
