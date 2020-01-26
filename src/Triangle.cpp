@@ -7,8 +7,8 @@
 
 Triangle::Triangle()
 {
-    const NUM_ATTRIBUTES = 2;
-    const NUM_VERTICES = 3;
+    const unsigned int NUM_ATTRIBUTES = 2;
+    const unsigned int NUM_VERTICES = 3;
     _numVertices = NUM_VERTICES * NUM_ATTRIBUTES;
     glm::vec4* vertices = new glm::vec4[_numVertices];
     

@@ -5,8 +5,10 @@
 
 #include "Triangle.h"
 #include "Rectangle.h"
+#include "Shader.h"
 
 #include <iostream>
+#include <cmath>
 
 void printOpenGLInfo()
 {
@@ -37,6 +39,7 @@ int main()
     Triangle tri;
     tri.bindShader("shaders/BasicTriangle");
     Rectangle rect;
+    float time = 0;
     
     std::cout << "Entering main loop.\n";
 	while(!glfwWindowShouldClose(window))
@@ -44,6 +47,11 @@ int main()
         glfwPollEvents();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
+        // Get time value
+        time = glfwGetTime();
+        time = 0.5f * std::sin(time) + 0.5f;
+        tri.getShader().setUniform("time", time); 
+
         // Draw everything
         //std::cout << "Drawing triangle.\n";
         tri.draw();
