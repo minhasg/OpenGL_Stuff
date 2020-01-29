@@ -12,6 +12,7 @@
 #include <iostream>
 
 class Shader;
+struct Vertex;
 
 class Drawable2D
 {
@@ -20,10 +21,11 @@ class Drawable2D
         ~Drawable2D();
         virtual bool draw() = 0;
         bool bindShader(Shader& s);
-        bool bindShader(const std::string&);        
+        bool bindShader(const std::string&);
+        Shader& getShader();
 
 	protected:
-        glm::vec4* _vertices;
+        Vertex* _vertices;
         unsigned int _numVertices;
         unsigned int* _indices;
     

@@ -3,6 +3,10 @@
 
 #include <iostream>
 
+#include <glm/vec4.hpp>
+#include <glm/vec3.hpp>
+#include <glm/vec2.hpp>
+
 typedef enum
 {
     SHADER_VERTEX,
@@ -20,6 +24,13 @@ class Shader
         bool bind();        
         
         Shader& operator=(const Shader& val);
+
+        bool setUniform(const std::string&, bool&);
+        bool setUniform(const std::string&, int&);
+        bool setUniform(const std::string&, float&);
+        bool setUniform(const std::string&, glm::vec2&);
+        bool setUniform(const std::string&, glm::vec3&);
+        bool setUniform(const std::string&, glm::vec4&);
 
     private:
         // Filenames for the currently bound shaders
