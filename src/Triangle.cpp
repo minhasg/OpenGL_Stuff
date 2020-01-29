@@ -1,5 +1,7 @@
 #include "Triangle.h"
 #include "Shader.h"
+#include "GraphicsUtils.h"
+
 #include <GL/glew.h>
 #include <glm/vec4.hpp>
 
@@ -7,48 +9,44 @@
 
 Triangle::Triangle()
 {
-    const unsigned int NUM_ATTRIBUTES = 2;
-    const unsigned int NUM_VERTICES = 3;
-    _numVertices = NUM_VERTICES * NUM_ATTRIBUTES;
-    glm::vec4* vertices = new glm::vec4[_numVertices];
+    _numVertices = 3;
+    _vertices = new Vertex[_numVertices];
     
     // Equilateral triangles only for now
-    vertices[0].x = -0.5f; 
-    vertices[0].y = -0.5f;
-    vertices[0].z = 0;
+    _vertices[0].position.x = -0.5f; 
+    _vertices[0].position.y = -0.5f;
+    _vertices[0].position.z = 0;
 
-    vertices[2].x = 0;
-    vertices[2].y = 0.5f;
-    vertices[2].z = 0;
+    _vertices[1].position.x = 0;
+    _vertices[1].position.y = 0.5f;
+    _vertices[1].position.z = 0;
 
-    vertices[4].x = 0.5f;
-    vertices[4].y = -0.5f;
-    vertices[4].z = 0;
+    _vertices[2].position.x = 0.5f;
+    _vertices[2].position.y = -0.5f;
+    _vertices[2].position.z = 0;
 
     // Colours
-    vertices[1].x = 1.0f; 
-    vertices[1].y = 0;
-    vertices[1].z = 0;
+    _vertices[0].color.r = 1.0f; 
+    _vertices[0].color.g = 0;
+    _vertices[0].color.b = 0;
 
-    vertices[3].x = 0;
-    vertices[3].y = 1.0f;
-    vertices[3].z = 0;
+    _vertices[1].color.r = 0;
+    _vertices[1].color.g = 1.0f;
+    _vertices[1].color.b = 0;
 
-    vertices[5].x = 0;
-    vertices[5].y = 0;
-    vertices[5].z = 1.0f;
-
-    _vertices = vertices;
+    _vertices[2].color.r = 0;
+    _vertices[2].color.g = 0;
+    _vertices[2].color.b = 1.0f;
    
     glGenVertexArrays(1, &_vao);
     glBindVertexArray(_vao);
     
     glGenBuffers(1, &_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, (_numVertices * sizeof(glm::vec4)), _vertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(glm::vec4), (void*)0);
+    glBufferData(GL_ARRAY_BUFFER, (_numVertices * sizeof(Vertex)), _vertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 2 * sizeof(glm::vec4), (void*)(sizeof(glm::vec4)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(glm::vec4)));
     glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);

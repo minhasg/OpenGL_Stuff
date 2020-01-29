@@ -1,32 +1,46 @@
 #include "Rectangle.h"
-#include "Drawable2D.h"
+#include "GraphicsUtils.h"
 #include "Shader.h"
 
 #include <GL/glew.h>
 
 Rectangle::Rectangle()
 {
-    _vertices = new glm::vec4[4];
-    _vertices[0].w = 1;
-    _vertices[0].x = -0.5f;
-    _vertices[0].y = 0.5f;
-    _vertices[0].z = 1.0f;
+    _numVertices = 4;
+    _vertices = new Vertex[_numVertices];
+    _vertices[0].position.x = -0.5f;
+    _vertices[0].position.y = 0.5f;
+    _vertices[0].position.z = 1.0f;
     
-    _vertices[1].w = 1;
-    _vertices[1].x = 0.5f;
-    _vertices[1].y = 0.5f;
-    _vertices[1].z = 1.0f;
+    _vertices[1].position.x = 0.5f;
+    _vertices[1].position.y = 0.5f;
+    _vertices[1].position.z = 1.0f;
 
-    _vertices[2].w = 1;
-    _vertices[2].x = 0.5f;
-    _vertices[2].y = -0.5f;
-    _vertices[2].z = 1.0f;
+    _vertices[2].position.x = 0.5f;
+    _vertices[2].position.y = -0.5f;
+    _vertices[2].position.z = 1.0f;
 
-    _vertices[3].w = 1;
-    _vertices[3].x = -0.5f;
-    _vertices[3].y = -0.5f;
-    _vertices[3].z = 1.0f;
+    _vertices[3].position.x = -0.5f;
+    _vertices[3].position.y = -0.5f;
+    _vertices[3].position.z = 1.0f;
 
+    // Set colour
+    _vertices[0].color.r = 0.5f;
+    _vertices[0].color.g = 0;
+    _vertices[0].color.b = 1.0f;
+    
+    _vertices[1].color.r = 0;
+    _vertices[1].color.g = 0.5;
+    _vertices[1].color.b = 1.0f;
+
+    _vertices[2].color.r = 1.0f;
+    _vertices[2].color.g = 0;
+    _vertices[2].color.b = 0;
+
+    _vertices[3].color.r = 0.5f;
+    _vertices[3].color.g = 1.0f;
+    _vertices[3].color.b = 0;
+    
     _indices = new unsigned int[6];
     _indices[0] = 0;
     _indices[1] = 2;
@@ -43,7 +57,7 @@ Rectangle::Rectangle()
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
     glBufferData(GL_ARRAY_BUFFER, 4 * sizeof(glm::vec4), _vertices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
     glEnableVertexAttribArray(0);
 
     glGenBuffers(1, &_ebo);

@@ -12,6 +12,7 @@
 #include <iostream>
 
 class Shader;
+struct Vertex;
 
 class Drawable2D
 {
@@ -24,7 +25,7 @@ class Drawable2D
         Shader& getShader();
 
 	protected:
-        glm::vec4* _vertices;
+        Vertex* _vertices;
         unsigned int _numVertices;
         unsigned int* _indices;
     
