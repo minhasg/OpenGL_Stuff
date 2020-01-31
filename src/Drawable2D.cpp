@@ -24,7 +24,7 @@ bool Drawable2D::bindShader(Shader& s)
 
 bool Drawable2D::bindShader(const std::string& filename)
 {
-    return _shader->loadShaderFromFile(filename);
+    return _shader->loadFromFile(filename);
 }
 
 Shader& Drawable2D::getShader()

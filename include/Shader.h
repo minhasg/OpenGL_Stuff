@@ -19,7 +19,7 @@ class Shader
     public:
         Shader();
         Shader(const std::string&);
-        bool loadShaderFromFile(const std::string&);
+        bool loadFromFile(const std::string&);
         bool compile();   
         bool bind();        
         

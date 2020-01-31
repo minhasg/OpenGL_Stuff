@@ -18,10 +18,10 @@ Shader::Shader()
 Shader::Shader(const std::string& filename)
 {
     _shaderId = 0;
-    loadShaderFromFile(filename);
+    loadFromFile(filename);
 }
 
-bool Shader::loadShaderFromFile(const std::string& filename)
+bool Shader::loadFromFile(const std::string& filename)
 {
     _source = filename;
     return compile();

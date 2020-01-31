@@ -32,7 +32,7 @@ class Drawable2D
         unsigned int _vbo;
         unsigned int _vao;        
         unsigned int _ebo;
-
+        
         Shader* _shader;
         bool _visible;
 };
