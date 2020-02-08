@@ -36,7 +36,7 @@ Shader.o: Utils.o
 	@echo "Building Shader.cpp"
 	@-$(CC) -c $(SOURCE)/Shader.cpp -o $(BINARY)/Shader.o $(OBJ_BUILD_FLAGS)
     
-Drawable2D.o: Shader.o
+Drawable2D.o: Shader.o Texture.o
 	@echo "Building Drawable2D.cpp"
 	@-$(CC) -c $(SOURCE)/Drawable2D.cpp -o $(BINARY)/Drawable2D.o $(OBJ_BUILD_FLAGS)
 
@@ -47,6 +47,10 @@ Utils.o:
 Rectangle.o: Drawable2D.o
 	@echo "Building Rectangle.cpp"
 	@-$(CC) -c $(SOURCE)/Rectangle.cpp -o $(BINARY)/Rectangle.o $(OBJ_BUILD_FLAGS)
+
+Texture.o: 	
+	@echo "Building Texture.cpp"
+	@-$(CC) -c $(SOURCE)/Texture.cpp -o $(BINARY)/Texture.o $(OBJ_BUILD_FLAGS)
 
 clean:
 	rm $(BINARY)/*.o $(TESTS_BINARY)/*.o 

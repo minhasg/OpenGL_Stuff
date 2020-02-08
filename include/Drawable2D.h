@@ -12,6 +12,7 @@
 #include <iostream>
 
 class Shader;
+class Texture;
 struct Vertex;
 
 class Drawable2D
@@ -23,7 +24,10 @@ class Drawable2D
         bool bindShader(Shader& s);
         bool bindShader(const std::string&);
         Shader& getShader();
-
+        
+        bool bindTexture(Texture&);
+        bool bindTexture(const std::string&);
+        
 	protected:
         Vertex* _vertices;
         unsigned int _numVertices;
@@ -34,6 +38,7 @@ class Drawable2D
         unsigned int _ebo;
         
         Shader* _shader;
+        Texture* _texture;
         bool _visible;
 };
 
