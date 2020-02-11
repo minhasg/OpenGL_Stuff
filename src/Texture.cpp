@@ -71,7 +71,6 @@ bool Texture::bind()
 bool Texture::setBorderColor(glm::vec4& color)
 {
     _borderColor = color;
-
     return true;
 }
 

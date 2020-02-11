@@ -3,9 +3,9 @@
 #include "Texture.h"
 
 #include <iostream>
-#include <glm/vec4.hpp>
+#include <glm/glm.hpp>
 
-Drawable2D::Drawable2D()
+Drawable2D::Drawable2D() : _projection(1.0f)
 {
     _vertices = nullptr;
     _indices = nullptr;
@@ -44,3 +44,4 @@ Shader& Drawable2D::getShader()
 {
     return (*_shader);
 }
+

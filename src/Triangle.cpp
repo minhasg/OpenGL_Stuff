@@ -4,8 +4,8 @@
 #include "Texture.h"
 
 #include <GL/glew.h>
-#include <glm/vec4.hpp>
 
+#include <glm/glm.hpp>
 
 
 Triangle::Triangle()
@@ -75,6 +75,10 @@ bool Triangle::draw()
 {
     _shader->bind();
     _texture->bind();
+    _calculateTransform();
+    _shader->setUniform("tex", 0);
+    _shader->setUniform("transform", _transform);
+    
     glBindVertexArray(_vao);
     glDrawArrays(GL_TRIANGLES, 0, 3); 
  

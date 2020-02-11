@@ -28,7 +28,7 @@ build: Triangle.o Rectangle.o
 	@echo "Running main build target"
 	@-$(CC) -I$(INCLUDE) $(BINARY)/*.o $(SOURCE)/main.cpp -o $(BINARY)/$(EXECUTABLE) $(OPENGL_LINKS) 
 
-Triangle.o: Drawable2D.o
+Triangle.o: Drawable2D.o Transformable.o
 	@echo "Building Triangle.cpp"
 	@-$(CC) -c $(SOURCE)/Triangle.cpp -o $(BINARY)/Triangle.o $(OBJ_BUILD_FLAGS)
 
@@ -51,6 +51,10 @@ Rectangle.o: Drawable2D.o
 Texture.o: 	
 	@echo "Building Texture.cpp"
 	@-$(CC) -c $(SOURCE)/Texture.cpp -o $(BINARY)/Texture.o $(OBJ_BUILD_FLAGS)
+
+Transformable.o: 	
+	@echo "Building Transformable.cpp"
+	@-$(CC) -c $(SOURCE)/Transformable.cpp -o $(BINARY)/Transformable.o $(OBJ_BUILD_FLAGS)
 
 clean:
 	rm $(BINARY)/*.o $(TESTS_BINARY)/*.o 
