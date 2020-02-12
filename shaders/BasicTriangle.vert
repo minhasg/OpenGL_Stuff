@@ -12,7 +12,7 @@ out vec2 texCoords;
 
 void main()
 {
-    gl_Position = vec4(inPos.x, inPos.y, inPos.z, 1);
+    gl_Position = transform * vec4(inPos.x, inPos.y, inPos.z, 1);
     vertexColor = inColor;
     texCoords = inTexCoords;
 }

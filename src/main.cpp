@@ -39,6 +39,7 @@ int main()
     
     printOpenGLInfo();
     Triangle tri;
+    tri.move(-0.5f, 0.0f);
     tri.bindShader("shaders/BasicTriangle");
     Rectangle rect;
     float startTime = glfwGetTime();
@@ -58,7 +59,9 @@ int main()
 
         // Draw everything
         //std::cout << "Drawing triangle.\n";
-        tri.move(0.1f * dt, 0);
+        //tri.rotate(dt);
+        tri.move(0.01f * std::sin(glfwGetTime()), 0.01f * std::cos(glfwGetTime()));
+        tri.scale(std::sin(glfwGetTime()) + 1.0f, std::cos(glfwGetTime()) + 1.0f);
         tri.draw();
         //rect.draw();        
 

@@ -33,6 +33,14 @@ bool Texture::loadFromFile(const std::string& source)
 
     stbi_set_flip_vertically_on_load(true);
     unsigned char* image = stbi_load(source.c_str(), &width, &height, &numChannels, 0);
+    for(int i = 0; i < 100; i++)
+    {
+        std::cout << image[i] << ' ';
+        if(i % 20 == 0)
+        {
+            std::cout << std::endl;
+        }
+    }
 
     glGenTextures(1, &_textureId);    
 
@@ -51,6 +59,8 @@ bool Texture::loadFromFile(const std::string& source)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+    std::cout << "Texture " << _source << " loaded.\n";
+
     return true;
 }
 
@@ -63,7 +73,8 @@ bool Texture::bind()
         _source = DEFAULT_TEXTURE_SOURCE;
         this->loadFromFile(_source);
     }
-
+    
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, _textureId);
     return true;
 }

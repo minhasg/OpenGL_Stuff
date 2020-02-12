@@ -1,5 +1,7 @@
 #include "Transformable.h"
 
+#include <cmath>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -41,9 +43,33 @@ bool Transformable::move(glm::vec3 trans)
 
 bool Transformable::rotate(float rx, float ry, float rz)
 {
-    _rotate.x = rx;
-    _rotate.y = ry;
-    _rotate.z = rz;
+    _rotate.x += rx;
+    _rotate.y += ry;
+    _rotate.z += rz;
+    
+    
+    // Keep values within the bounds [-2*pi, 2*pi]
+    float* ptr = (float*) &_rotate;
+    for(int i = 0; i < 3; i++)
+    {
+        if(ptr[i] < -2.0f * M_PI)
+        {
+            // Angle is less than -2*pi
+            while(ptr[i] < 2 * M_PI)
+            {
+                // Keep adding 2*pi until it's within bounds
+                ptr[i] += 2 * M_PI;
+            }
+        }
+        if(ptr[i] > 2.0f * M_PI)
+        {
+            while(ptr[i] > 2 * M_PI)
+            {
+                ptr[i] -= 2 * M_PI;
+            }
+        }
+    }
+    
     return true;
 }
 
