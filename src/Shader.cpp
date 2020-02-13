@@ -5,9 +5,8 @@
 #include <iostream>
 #include <cstdio>
 
-#include <glm/vec2.hpp>
-#include <glm/vec3.hpp>
-#include <glm/vec4.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 Shader::Shader()
 {
@@ -108,7 +107,7 @@ Shader& Shader::operator=(const Shader& val)
     return *this;
 }
 
-bool Shader::setUniform(const std::string& name, bool& value)
+bool Shader::setUniform(const std::string& name, bool value)
 {
     glUseProgram(_shaderId);
     int uniformLocation = glGetUniformLocation(_shaderId, name.c_str());
@@ -117,7 +116,7 @@ bool Shader::setUniform(const std::string& name, bool& value)
     return true;
 }
 
-bool Shader::setUniform(const std::string& name, int& value)
+bool Shader::setUniform(const std::string& name, int value)
 {
     glUseProgram(_shaderId);
     int uniformLocation = glGetUniformLocation(_shaderId, name.c_str());
@@ -126,7 +125,7 @@ bool Shader::setUniform(const std::string& name, int& value)
     return true;
 }
 
-bool Shader::setUniform(const std::string& name, float& value)
+bool Shader::setUniform(const std::string& name, float value)
 {
     glUseProgram(_shaderId);
     int uniformLocation = glGetUniformLocation(_shaderId, name.c_str());
@@ -135,7 +134,7 @@ bool Shader::setUniform(const std::string& name, float& value)
     return true;
 }
 
-bool Shader::setUniform(const std::string& name, glm::vec2& value)
+bool Shader::setUniform(const std::string& name, glm::vec2 value)
 {
     glUseProgram(_shaderId);
     int uniformLocation = glGetUniformLocation(_shaderId, name.c_str());
@@ -144,7 +143,7 @@ bool Shader::setUniform(const std::string& name, glm::vec2& value)
     return true;
 }
 
-bool Shader::setUniform(const std::string& name, glm::vec3& value)
+bool Shader::setUniform(const std::string& name, glm::vec3 value)
 {
     glUseProgram(_shaderId);
     int uniformLocation = glGetUniformLocation(_shaderId, name.c_str());
@@ -153,11 +152,21 @@ bool Shader::setUniform(const std::string& name, glm::vec3& value)
     return true;
 }
 
-bool Shader::setUniform(const std::string& name, glm::vec4& value)
+bool Shader::setUniform(const std::string& name, glm::vec4 value)
 {
     glUseProgram(_shaderId);
     int uniformLocation = glGetUniformLocation(_shaderId, name.c_str());
     glUniform4f(uniformLocation, value.x, value.y, value.z, value.w);
+    glUseProgram(0);
+    return true;
+}
+
+
+bool Shader::setUniform(const std::string& name, glm::mat4 value)
+{
+    glUseProgram(_shaderId);
+    int uniformLocation = glGetUniformLocation(_shaderId, name.c_str());
+    glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(value));
     glUseProgram(0);
     return true;
 }

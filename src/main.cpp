@@ -39,23 +39,30 @@ int main()
     
     printOpenGLInfo();
     Triangle tri;
+    tri.move(-0.5f, 0.0f);
     tri.bindShader("shaders/BasicTriangle");
     Rectangle rect;
-    float time = 0;
+    float startTime = glfwGetTime();
+    float dt = 0;
     
     std::cout << "Entering main loop.\n";
 	while(!glfwWindowShouldClose(window))
-	{   	
+	{
+        // Update time
+        dt = glfwGetTime() - startTime;
+        startTime = glfwGetTime();
+
         glfwPollEvents();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        // Get time value
-        time = glfwGetTime();
-        time = 0.5f * std::sin(time) + 0.5f;
-        tri.getShader().setUniform("time", time); 
+        tri.getShader().setUniform("time", (0.5f + std::sin(startTime) * 0.5f)); 
 
         // Draw everything
         //std::cout << "Drawing triangle.\n";
+        //tri.rotate(dt);
+        tri.setPosition(1.0f * std::sin(2 * glfwGetTime()), 1.0f * std::cos(3 * glfwGetTime()));
+        tri.setAngle(std::sin(2.5f * glfwGetTime()));
+        tri.scale(std::sin(glfwGetTime()) + 1.0f, std::cos(glfwGetTime()) + 1.0f);
         tri.draw();
         //rect.draw();        
 

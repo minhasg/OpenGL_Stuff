@@ -1,9 +1,12 @@
 #ifndef _TRIANGLE_H_
 #define _TRIANGLE_H_
 
-#include "Drawable2D.h"
+class Drawable2D;
 
-class Triangle : public Drawable2D
+#include "Drawable2D.h"
+#include "Transformable.h"
+
+class Triangle : public Drawable2D, public Transformable
 {
     public:
         Triangle();

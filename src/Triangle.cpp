@@ -2,10 +2,11 @@
 #include "Shader.h"
 #include "GraphicsUtils.h"
 #include "Texture.h"
+#include "Transformable.h"
 
 #include <GL/glew.h>
-#include <glm/vec4.hpp>
 
+#include <glm/glm.hpp>
 
 
 Triangle::Triangle()
@@ -73,6 +74,17 @@ Triangle::~Triangle()
 
 bool Triangle::draw()
 {
+    _calculateTransform();
+
+    std::cout << "Printing transformation matrix:\n";
+    for(int i = 0; i < 4; i++)
+    {
+        std::cout << _transform[i].x << ' ' << _transform[i].y << ' ' << _transform[i].z << ' ' << _transform[i].w << std::endl;
+    }
+    
+    //_shader->setUniform("tex", 0);
+    _shader->setUniform("transform", _transform);
+
     _shader->bind();
     _texture->bind();
     glBindVertexArray(_vao);
