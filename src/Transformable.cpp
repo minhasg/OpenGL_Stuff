@@ -47,29 +47,7 @@ bool Transformable::rotate(float rx, float ry, float rz)
     _rotate.y += ry;
     _rotate.z += rz;
     
-    
-    // Keep values within the bounds [-2*pi, 2*pi]
-    float* ptr = (float*) &_rotate;
-    for(int i = 0; i < 3; i++)
-    {
-        if(ptr[i] < -2.0f * M_PI)
-        {
-            // Angle is less than -2*pi
-            while(ptr[i] < 2 * M_PI)
-            {
-                // Keep adding 2*pi until it's within bounds
-                ptr[i] += 2 * M_PI;
-            }
-        }
-        if(ptr[i] > 2.0f * M_PI)
-        {
-            while(ptr[i] > 2 * M_PI)
-            {
-                ptr[i] -= 2 * M_PI;
-            }
-        }
-    }
-    
+    _reduceRotateAngle();  
     return true;
 }
 
@@ -120,4 +98,67 @@ bool Transformable::_calculateTransform()
     _transform = glm::rotate(_transform, _rotate.z, glm::vec3(0, 0, 1.0f));
     _transform = glm::scale(_transform, _scale);
     return true;    
+}
+
+bool Transformable::setAngle(float rx, float ry, float rz)
+{
+    _rotate.x = rx;
+    _rotate.y = ry;
+    _rotate.z = rz;
+    _reduceRotateAngle();
+    
+    return true;
+}
+
+bool Transformable::setAngle(float rz)
+{
+    return setAngle(0.0f, 0.0f, rz);
+}
+
+bool Transformable::setAngle(glm::vec3 rot)
+{
+    return setAngle(rot.x, rot.y, rot.z);
+}
+
+bool Transformable::setPosition(float dx, float dy, float dz)
+{
+    _translate.x = dx;
+    _translate.y = dy;
+    _translate.z = dz;
+    return true; 
+}
+
+bool Transformable::setPosition(glm::vec3 pos)
+{
+    return setPosition(pos.x, pos.y, pos.z);
+}
+
+bool Transformable::setPosition(glm::vec2 pos)
+{
+    return setPosition(pos.x, pos.y);
+}
+
+void Transformable::_reduceRotateAngle()
+{
+    // Keep values within the bounds [-2*pi, 2*pi]
+    float* ptr = (float*) &_rotate;
+    for(int i = 0; i < 3; i++)
+    {
+        if(ptr[i] < -2.0f * M_PI)
+        {
+            // Angle is less than -2*pi
+            while(ptr[i] < 2 * M_PI)
+            {
+                // Keep adding 2*pi until it's within bounds
+                ptr[i] += 2 * M_PI;
+            }
+        }
+        if(ptr[i] > 2.0f * M_PI)
+        {
+            while(ptr[i] > 2 * M_PI)
+            {
+                ptr[i] -= 2 * M_PI;
+            }
+        }
+    }
 }

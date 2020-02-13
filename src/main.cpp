@@ -60,7 +60,8 @@ int main()
         // Draw everything
         //std::cout << "Drawing triangle.\n";
         //tri.rotate(dt);
-        tri.move(0.01f * std::sin(glfwGetTime()), 0.01f * std::cos(glfwGetTime()));
+        tri.setPosition(1.0f * std::sin(2 * glfwGetTime()), 1.0f * std::cos(3 * glfwGetTime()));
+        tri.setAngle(std::sin(2.5f * glfwGetTime()));
         tri.scale(std::sin(glfwGetTime()) + 1.0f, std::cos(glfwGetTime()) + 1.0f);
         tri.draw();
         //rect.draw();        

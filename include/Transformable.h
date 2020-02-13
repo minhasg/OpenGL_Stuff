@@ -14,9 +14,17 @@ class Transformable
         bool move(glm::vec2 trans);
         bool move(glm::vec3 trans);
 
+        bool setPosition(float dx, float dy, float dz = 0);
+        bool setPosition(glm::vec3 pos);
+        bool setPosition(glm::vec2 pos);
+
         bool rotate(float rx, float ry, float rz);
-        bool rotate(float rx);
+        bool rotate(float rz);
         bool rotate(glm::vec3 rot);
+
+        bool setAngle(float rx, float ry, float rz);
+        bool setAngle(float rz);
+        bool setAngle(glm::vec3 rot);
 
         bool scale(float sx, float sy, float sz);
         bool scale(float sx, float sy);
@@ -30,6 +38,7 @@ class Transformable
         glm::mat4 _transform;
 
         bool _calculateTransform();
+        void _reduceRotateAngle();
 };
 
 #endif
