@@ -24,7 +24,7 @@ UtilsTest.o: Utils.o
 # TARGETS FOR TESTING ABOVE, TARGETS FOR MAIN BUILD BELOW #
 ###########################################################
 
-build: Triangle.o Rectangle.o
+build: Triangle.o Rectangle.o Window.o
 	@echo "Running main build target"
 	@-$(CC) -I$(INCLUDE) $(BINARY)/*.o $(SOURCE)/main.cpp -o $(BINARY)/$(EXECUTABLE) $(OPENGL_LINKS) 
 
@@ -55,6 +55,10 @@ Texture.o:
 Transformable.o: 	
 	@echo "Building Transformable.cpp"
 	@-$(CC) -c $(SOURCE)/Transformable.cpp -o $(BINARY)/Transformable.o $(OBJ_BUILD_FLAGS)
+
+Window.o: 	
+	@echo "Building Window.cpp"
+	@-$(CC) -c $(SOURCE)/Window.cpp -o $(BINARY)/Window.o $(OBJ_BUILD_FLAGS)
 
 clean:
 	rm $(BINARY)/*.o $(TESTS_BINARY)/*.o 
