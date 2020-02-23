@@ -8,6 +8,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+unsigned int Shader::_currentShader = 0;
+
 Shader::Shader()
 {
     _source = "";
@@ -96,6 +98,7 @@ bool Shader::bind()
         compile();
     }
     glUseProgram(_shaderId);
+    Shader::_currentShader = _shaderId;
     return true;
 }
 
@@ -112,7 +115,7 @@ bool Shader::setUniform(const std::string& name, bool value)
     glUseProgram(_shaderId);
     int uniformLocation = glGetUniformLocation(_shaderId, name.c_str());
     glUniform1i(uniformLocation, (int) value);
-    glUseProgram(0);
+    glUseProgram(Shader::_currentShader);
     return true;
 }
 
@@ -121,7 +124,7 @@ bool Shader::setUniform(const std::string& name, int value)
     glUseProgram(_shaderId);
     int uniformLocation = glGetUniformLocation(_shaderId, name.c_str());
     glUniform1i(uniformLocation, value);
-    glUseProgram(0);
+    glUseProgram(Shader::_currentShader);
     return true;
 }
 
@@ -130,7 +133,7 @@ bool Shader::setUniform(const std::string& name, float value)
     glUseProgram(_shaderId);
     int uniformLocation = glGetUniformLocation(_shaderId, name.c_str());
     glUniform1f(uniformLocation, value);
-    glUseProgram(0);
+    glUseProgram(Shader::_currentShader);
     return true;
 }
 
@@ -139,7 +142,7 @@ bool Shader::setUniform(const std::string& name, glm::vec2 value)
     glUseProgram(_shaderId);
     int uniformLocation = glGetUniformLocation(_shaderId, name.c_str());
     glUniform2f(uniformLocation, value.x, value.y);
-    glUseProgram(0);
+    glUseProgram(Shader::_currentShader);
     return true;
 }
 
@@ -148,7 +151,7 @@ bool Shader::setUniform(const std::string& name, glm::vec3 value)
     glUseProgram(_shaderId);
     int uniformLocation = glGetUniformLocation(_shaderId, name.c_str());
     glUniform3f(uniformLocation, value.x, value.y, value.z);
-    glUseProgram(0);
+    glUseProgram(Shader::_currentShader);
     return true;
 }
 
@@ -157,7 +160,7 @@ bool Shader::setUniform(const std::string& name, glm::vec4 value)
     glUseProgram(_shaderId);
     int uniformLocation = glGetUniformLocation(_shaderId, name.c_str());
     glUniform4f(uniformLocation, value.x, value.y, value.z, value.w);
-    glUseProgram(0);
+    glUseProgram(Shader::_currentShader);
     return true;
 }
 
@@ -167,6 +170,6 @@ bool Shader::setUniform(const std::string& name, glm::mat4 value)
     glUseProgram(_shaderId);
     int uniformLocation = glGetUniformLocation(_shaderId, name.c_str());
     glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(value));
-    glUseProgram(0);
+    glUseProgram(Shader::_currentShader);
     return true;
 }

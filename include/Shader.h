@@ -30,13 +30,15 @@ class Shader
         bool setUniform(const std::string&, glm::vec3);
         bool setUniform(const std::string&, glm::vec4);
         bool setUniform(const std::string&, glm::mat4);
+        
+        static unsigned int _currentShader;
 
     private:
         // Filenames for the currently bound shaders
         std::string _source;
         // ID for compiled shader
         unsigned int _shaderId;
-
+        
         bool _printErrors(unsigned int shader);
 };
 
