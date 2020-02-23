@@ -8,6 +8,7 @@
 #include "Triangle.h"
 #include "Rectangle.h"
 #include "Shader.h"
+#include "Window.h"
 
 #include <iostream>
 #include <cmath>
@@ -27,9 +28,8 @@ int main()
         std::cout << "Failed to initialize GLFW!\n";
 		return -1;
 	}
-	GLFWwindow* window = glfwCreateWindow(800, 600, "Hurh", NULL, NULL);
-	glfwMakeContextCurrent(window);
-    
+	Window window(800, 600, "Hurh");
+    window.makeCurrent();    
     glewExperimental = GL_TRUE;
     if(glewInit() != GLEW_OK)
     {
@@ -46,14 +46,14 @@ int main()
     float dt = 0;
     
     std::cout << "Entering main loop.\n";
-	while(!glfwWindowShouldClose(window))
+	while(!window.shouldClose())
 	{
         // Update time
         dt = glfwGetTime() - startTime;
         startTime = glfwGetTime();
 
         glfwPollEvents();
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        window.clear();
         
         tri.getShader().setUniform("time", (0.5f + std::sin(startTime) * 0.5f)); 
 
@@ -68,11 +68,8 @@ int main()
 
         // Swap buffers
         //std::cout << "Swapping buffers.\n";
-		glfwSwapBuffers(window);
-        
+		window.display();
 	}
-
-	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
 
