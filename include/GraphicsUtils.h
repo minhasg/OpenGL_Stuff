@@ -11,4 +11,6 @@ struct Vertex
     glm::vec2 texture;
 };
 
+typedef glm::vec4 Color;
+
 #endif
