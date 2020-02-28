@@ -1,11 +1,11 @@
-#include "Drawable2D.h"
+#include "Drawable.h"
 #include "Shader.h"
 #include "Texture.h"
 
 #include <iostream>
 #include <glm/glm.hpp>
 
-Drawable2D::Drawable2D() : _projection(1.0f)
+Drawable::Drawable() : _model(1.0f)
 {
     _vertices = nullptr;
     _indices = nullptr;
@@ -13,34 +13,34 @@ Drawable2D::Drawable2D() : _projection(1.0f)
     _texture = new Texture;
 }
 
-Drawable2D::~Drawable2D()
+Drawable::~Drawable()
 {
     delete _shader;
 }
 
-bool Drawable2D::bindShader(Shader& s)
+bool Drawable::bindShader(Shader& s)
 {
     *_shader = s;
     return true;
 }
 
-bool Drawable2D::bindShader(const std::string& filename)
+bool Drawable::bindShader(const std::string& filename)
 {
     return _shader->loadFromFile(filename);
 }
 
-bool Drawable2D::bindTexture(Texture& t)
+bool Drawable::bindTexture(Texture& t)
 {
     *_texture = t;
     return true;
 }
 
-bool Drawable2D::bindTexture(const std::string& filename)
+bool Drawable::bindTexture(const std::string& filename)
 {
     return _texture->loadFromFile(filename);
 }
 
-Shader& Drawable2D::getShader()
+Shader& Drawable::getShader()
 {
     return (*_shader);
 }

@@ -5,8 +5,8 @@
  * when drawing any 2D shape.                                           *
  *======================================================================*                                                                 
  */
-#ifndef _DRAWABLE_2D_H_
-#define _DRAWABLE_2D_H_
+#ifndef _DRAWABLE_H_
+#define _DRAWABLE_H_
 
 #include <glm/glm.hpp>
 #include <iostream>
@@ -15,11 +15,11 @@ class Shader;
 class Texture;
 struct Vertex;
 
-class Drawable2D
+class Drawable
 {
 	public:
-        Drawable2D();
-        ~Drawable2D();
+        Drawable();
+        ~Drawable();
         virtual bool draw() = 0;
         bool bindShader(Shader& s);
         bool bindShader(const std::string&);
@@ -41,7 +41,7 @@ class Drawable2D
         Texture* _texture;
         bool _visible;
 
-        glm::mat4 _projection;
+        glm::mat4 _model;
 };
 
 #endif
